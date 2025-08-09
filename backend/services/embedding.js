@@ -39,6 +39,7 @@ export async function embedText(text) {
 
   // Convert tensor data to plain array
   const arr = Array.from(output.data);
+  console.log(arr);
 
   // Normalize manually for consistency
   return normalizeVector(arr);

@@ -104,3 +104,37 @@ export async function searchFoods(req, res) {
       return res.status(500).json({ message: "Server error", error: err.message });
     }
   }
+
+
+  export const aggrePractice = async (req, res) => {
+    const today = new Date();
+    try {
+      const pipeline = [
+        {
+          $group: {
+            _id: { $year: "$ExpiryDate" }, // Group by year of expiry
+            count: { $sum: 1 }             // Count documents in each group
+          }
+        },
+        {$sort : {ExpiryDate : 1}},
+        {$limit : 3},
+        // {$match : {ExpiryDate : {$gte : today}}},
+          {$project: {
+            foodname: 1,
+            desc: 1,
+            ExpiryDate: 1,
+            _id: 0,
+          },
+        },
+      ];
+  
+      const Data = await fooddetailsModel.aggregate(pipeline).exec();
+  
+      console.log(Data); // now logs the actual result array
+  
+      return res.json(Data); // send the data as JSON response
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
