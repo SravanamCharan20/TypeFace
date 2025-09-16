@@ -94,7 +94,7 @@ app.get('/test', (req, res) => {
   res.send('backend is running');
 });
 
-app.use('/api/upload', AutenticateUser, AuthorizeUser(['admin', 'user']), crudOp);
+app.use('/api/upload', AutenticateUser, AuthorizeUser(['admin','user']), crudOp);
 app.use('/api/generate', AdvConcepts);
 app.use('/api/user', UserRoutes);
 app.use('/api/foods',FoodDetails)
